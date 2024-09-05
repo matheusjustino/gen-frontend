@@ -1,0 +1,25 @@
+{
+  "users": [
+    {
+      "id": "83d7",
+      "email": "user1@email.com",
+      "password": "123"
+    }
+  ],
+  "todos": [
+    {
+      "title": "Todo1",
+      "description": "todo1",
+      "status": "OPEN",
+      "updated_at": "2024-09-04T07:54:18.916Z",
+      "id": "f6c4"
+    },
+    {
+      "title": "Todo2",
+      "description": "todo2",
+      "status": "DONE",
+      "updated_at": "2024-09-04T07:49:56.974Z",
+      "id": "f95f"
+    }
+  ]
+}

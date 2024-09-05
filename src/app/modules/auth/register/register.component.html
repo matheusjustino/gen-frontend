@@ -1,0 +1,85 @@
+<div class="flex flex-col gap-2 rounded-lg bg-white p-6 shadow">
+	<h5 class="mb-2 text-xl font-bold text-gray-900">Register Here</h5>
+
+	<form
+		action=""
+		[formGroup]="registerForm"
+		(ngSubmit)="onSubmit()"
+		autocomplete="off"
+		novalidate
+	>
+		<div class="form-group mb-3">
+			<label for="name">Name</label>
+			<input
+				id="name"
+				type="text"
+				placeholder="Name"
+				class="form-control"
+				formControlName="name"
+				[class]="{
+					invalid:
+						registerForm.get('name')?.hasError('required') &&
+						registerForm.get('name')?.touched,
+					valid: registerForm.get('name')?.valid,
+				}"
+			/>
+			@if (
+				registerForm.get("email")?.hasError("required") &&
+				registerForm.get("email")?.touched
+			) {
+				<span class="form-error">Email Address is required.</span>
+			}
+		</div>
+
+		<div class="form-group mb-3">
+			<label for="email">Email Address</label>
+			<input
+				id="email"
+				type="text"
+				placeholder="Email Address"
+				class="form-control"
+				formControlName="email"
+				[class]="{
+					invalid:
+						registerForm.get('email')?.hasError('required') &&
+						registerForm.get('email')?.touched,
+					valid: registerForm.get('email')?.valid,
+				}"
+			/>
+			@if (
+				registerForm.get("email")?.hasError("required") &&
+				registerForm.get("email")?.touched
+			) {
+				<span class="form-error">Email Address is required.</span>
+			}
+		</div>
+
+		<div class="form-group mb-3">
+			<label for="password">Password</label>
+			<input
+				id="password"
+				type="password"
+				placeholder="Password"
+				class="form-control"
+				formControlName="password"
+				[class]="{
+					invalid:
+						registerForm.get('password')?.hasError('required') &&
+						registerForm.get('password')?.touched,
+					valid: registerForm.get('password')?.valid,
+				}"
+			/>
+			@if (
+				registerForm.get("password")?.hasError("required") &&
+				registerForm.get("password")?.touched
+			) {
+				<span class="form-error">Password is required.</span>
+			}
+		</div>
+
+		<div class="flex items-center justify-between gap-3">
+			<button class="btn btn-primary">Submit</button>
+			<a (click)="navigateTo('')" class="cursor-pointer underline text-slate-400">Already have an account?</a>
+		</div>
+	</form>
+</div>

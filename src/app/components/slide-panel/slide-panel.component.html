@@ -1,0 +1,23 @@
+@if (isOpen) {
+	<div class="fixed right-0 top-0 z-30 h-screen w-screen bg-gray-900/60">
+		<div
+			class="absolute right-0 h-screen w-screen max-w-md bg-white shadow"
+			@fadeSlideInRight
+		>
+			<div
+				class="relative flex items-center justify-between border-b border-gray-200 p-5"
+			>
+				<h4 class="text-xl font-bold">{{ headerText }}</h4>
+
+				<lucide-icon
+					class="cursor-pointer"
+					[img]="XIcon"
+					(click)="onClosePanel()"
+				></lucide-icon>
+			</div>
+			<div class="app-slide-panel flex flex-col p-5">
+				<ng-content></ng-content>
+			</div>
+		</div>
+	</div>
+}

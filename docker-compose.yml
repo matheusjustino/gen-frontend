@@ -1,0 +1,14 @@
+services:
+  frontend:
+    build: .
+    container_name: www
+    ports:
+      - "4200:4200"
+    command: >
+      bash -c "npm install && ng serve --host 0.0.0.0 --port 4200"
+    networks:
+      - gen-services
+
+networks:
+  gen-services:
+    driver: bridge
