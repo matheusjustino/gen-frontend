@@ -1,11 +1,10 @@
-import { ApplicationConfig, importProvidersFrom } from '@angular/core';
-import { provideRouter } from '@angular/router';
-
-import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
+import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { graphqlProvider } from './graphql.provider';
+import { provideRouter } from '@angular/router';
 import { provideToastr } from 'ngx-toastr';
+import { routes } from './app.routes';
+import { graphqlProvider } from './graphql.provider';
 
 export const appConfig: ApplicationConfig = {
 	providers: [

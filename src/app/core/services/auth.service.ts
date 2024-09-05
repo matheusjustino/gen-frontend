@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { ILogin, IRegister } from '../models/auth.model';
-import { map } from 'rxjs';
-import { JwtService } from './jwt.service';
 import { Apollo } from 'apollo-angular';
+import { map } from 'rxjs';
 import { DO_LOGIN, REGISTER } from '../gql/mutations';
+import { ILogin, IRegister } from '../models/auth.model';
+import { JwtService } from './jwt.service';
 
 @Injectable({
 	providedIn: 'root',

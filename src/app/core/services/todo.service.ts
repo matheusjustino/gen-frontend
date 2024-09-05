@@ -2,8 +2,11 @@ import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { map } from 'rxjs';
 
+// GQL
 import { CREATE_TODO, UPDATE_TODO } from '../gql/mutations';
 import { GET_TODOS } from '../gql/queries';
+
+// MODELS
 import { ICreateTodo, ITodo, IUpdateTodo } from '../models/todo.model';
 
 @Injectable({
