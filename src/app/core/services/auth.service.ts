@@ -1,8 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { map } from 'rxjs';
+
+// GQL
 import { DO_LOGIN, REGISTER } from '../gql/mutations';
+
+// MODELS
 import { ILogin, IRegister } from '../models/auth.model';
+
+// SERVICES
 import { JwtService } from './jwt.service';
 
 @Injectable({

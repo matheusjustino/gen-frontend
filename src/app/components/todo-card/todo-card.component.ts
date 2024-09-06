@@ -1,4 +1,6 @@
 import { Component, Input } from '@angular/core';
+
+// MODELS
 import { ITodo, ITodoType } from '../../core/models/todo.model';
 
 @Component({

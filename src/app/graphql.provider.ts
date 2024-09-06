@@ -7,6 +7,8 @@ import {
 import { setContext } from '@apollo/client/link/context';
 import { Apollo, APOLLO_OPTIONS } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
+
+// ENVS
 import { environment } from '../environments/environment';
 
 const auth = setContext((operation, context) => {

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, OnDestroy, OnInit } from '@angular/core';
 import {
 	FormBuilder,
 	FormControl,
@@ -9,10 +9,19 @@ import {
 import { LucideAngularModule, Plus } from 'lucide-angular';
 import { ToastrService } from 'ngx-toastr';
 import { SubSink } from 'subsink';
+
+// MODELS
+import { ITodo, ITodoStatus } from '../../core/models/todo.model';
+
+// SERVICES
+import { TodoService } from '../../core/services/todo.service';
+
+// STORES
+import { TodoStore } from '../../core/store/todo.store';
+
+// COMPONENTS
 import { SlidePanelComponent } from '../../components/slide-panel/slide-panel.component';
 import { TodoCardComponent } from '../../components/todo-card/todo-card.component';
-import { ITodo, ITodoStatus } from '../../core/models/todo.model';
-import { TodoService } from '../../core/services/todo.service';
 
 @Component({
 	selector: 'app-todo',
@@ -28,18 +37,20 @@ import { TodoService } from '../../core/services/todo.service';
 })
 export class TodoComponent implements OnInit, OnDestroy {
 	protected readonly PlusIcon = Plus;
-	protected todos: ITodo[] = [];
-	protected todoStatus = ITodoStatus;
+	protected readonly todoStatus = ITodoStatus;
+	protected readonly todoForm!: FormGroup;
+	private readonly subs = new SubSink();
+	protected todos = computed<ITodo[]>(() => []);
 	protected isSlidePanelOpen = false;
 	protected todoId: string | null = null;
-	protected todoForm!: FormGroup;
-	private subs = new SubSink();
 
 	constructor(
 		private readonly fb: FormBuilder,
 		private readonly todoService: TodoService,
 		private readonly toastr: ToastrService,
+		private readonly todoStore: TodoStore,
 	) {
+		this.todos = this.todoStore.todos;
 		this.todoForm = this.fb.group({
 			title: new FormControl('', [Validators.required]),
 			description: new FormControl('', [Validators.required]),
@@ -93,8 +104,8 @@ export class TodoComponent implements OnInit, OnDestroy {
 
 	private getAllTodos() {
 		this.subs.sink = this.todoService.getAll().subscribe({
-			next: (res) => {
-				this.todos = res;
+			complete: () => {
+				this.toastr.success(`TODOs loaded successfully`);
 			},
 		});
 	}
@@ -103,9 +114,8 @@ export class TodoComponent implements OnInit, OnDestroy {
 		this.subs.sink = this.todoService
 			.create(this.todoForm.value)
 			.subscribe({
-				next: (res) => {
+				next: () => {
 					this.toastr.success(`TODO created successfully`);
-					this.todos = [res, ...this.todos];
 					this.onCloseSlidePanel();
 				},
 				error: (err) => {
@@ -119,15 +129,7 @@ export class TodoComponent implements OnInit, OnDestroy {
 		this.subs.sink = this.todoService
 			.update({ ...this.todoForm.value, id: this.todoId })
 			.subscribe({
-				next: (res) => {
-					const outdatedTodoIndex = this.todos.findIndex(
-						(t) => t.id === res.id,
-					);
-					if (outdatedTodoIndex > -1) {
-						const todosCopy = [...this.todos];
-						todosCopy[outdatedTodoIndex] = res;
-						this.todos = [...todosCopy];
-					}
+				next: () => {
 					this.toastr.success(`TODO updated successfully`);
 					this.onCloseSlidePanel();
 				},

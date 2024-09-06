@@ -1,8 +1,12 @@
 import { Routes } from '@angular/router';
-import { DefaultComponent } from './components/layouts/default/default.component';
-import { MasterComponent } from './components/layouts/master/master.component';
+
+// GUARDS
 import { authGuard } from './core/guards/auth.guard';
 import { guestGuard } from './core/guards/guest.guard';
+
+// COMPONENTS
+import { DefaultComponent } from './components/layouts/default/default.component';
+import { MasterComponent } from './components/layouts/master/master.component';
 import { LoginComponent } from './modules/auth/login/login.component';
 import { RegisterComponent } from './modules/auth/register/register.component';
 import { TodoComponent } from './modules/todo/todo.component';

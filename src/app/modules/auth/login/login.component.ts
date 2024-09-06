@@ -9,6 +9,8 @@ import {
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { SubSink } from 'subsink';
+
+// SERVICES
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
@@ -24,8 +26,8 @@ export class LoginComponent implements OnDestroy {
 
 	constructor(
 		private readonly fb: FormBuilder,
-		private readonly authService: AuthService,
 		private readonly router: Router,
+		private readonly authService: AuthService,
 		private readonly toastr: ToastrService,
 	) {
 		this.loginForm = this.fb.group({

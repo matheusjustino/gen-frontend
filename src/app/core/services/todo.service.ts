@@ -9,18 +9,29 @@ import { GET_TODOS } from '../gql/queries';
 // MODELS
 import { ICreateTodo, ITodo, IUpdateTodo } from '../models/todo.model';
 
+// STORES
+import { TodoStore } from '../store/todo.store';
+
 @Injectable({
 	providedIn: 'root',
 })
 export class TodoService {
-	constructor(private readonly apollo: Apollo) {}
+	constructor(
+		private readonly apollo: Apollo,
+		private readonly todoStore: TodoStore,
+	) {}
 
 	getAll() {
 		return this.apollo
 			.query<{ getTodos: ITodo[] }>({
 				query: GET_TODOS,
 			})
-			.pipe(map((res) => res.data.getTodos));
+			.pipe(
+				map((res) => {
+					this.todoStore.setTodos(res.data.getTodos);
+					return res.data.getTodos;
+				}),
+			);
 	}
 
 	create(data: ICreateTodo) {
@@ -29,7 +40,12 @@ export class TodoService {
 				mutation: CREATE_TODO,
 				variables: data,
 			})
-			.pipe(map((res) => res.data?.createTodo!));
+			.pipe(
+				map((res) => {
+					this.todoStore.addTodo(res.data?.createTodo!);
+					return res.data?.createTodo!;
+				}),
+			);
 	}
 
 	update(data: IUpdateTodo) {
@@ -38,6 +54,11 @@ export class TodoService {
 				mutation: UPDATE_TODO,
 				variables: data,
 			})
-			.pipe(map((res) => res.data?.updateTodo!));
+			.pipe(
+				map((res) => {
+					this.todoStore.updateTodo(res.data?.updateTodo!);
+					return res.data?.updateTodo!;
+				}),
+			);
 	}
 }
