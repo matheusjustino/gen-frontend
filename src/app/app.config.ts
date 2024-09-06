@@ -8,6 +8,7 @@ import { provideToastr } from 'ngx-toastr';
 import { routes } from './app.routes';
 
 // PROVIDERS
+import { CustomProviders } from './core/providers/custom.provider';
 import { graphqlProvider } from './graphql.provider';
 
 export const appConfig: ApplicationConfig = {
@@ -15,8 +16,8 @@ export const appConfig: ApplicationConfig = {
 		provideRouter(routes),
 		provideHttpClient(),
 		importProvidersFrom(BrowserAnimationsModule),
-		provideHttpClient(),
 		graphqlProvider,
 		provideToastr(),
+		CustomProviders,
 	],
 };

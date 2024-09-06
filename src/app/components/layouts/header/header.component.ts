@@ -3,7 +3,9 @@ import { Component } from '@angular/core';
 
 // SERVICES
 import { AuthService } from '../../../core/services/auth.service';
-import { JwtService } from '../../../core/services/jwt.service';
+
+// STORES
+import { AuthStore } from '../../../core/store/auth.store';
 
 @Component({
 	selector: 'app-header',
@@ -17,9 +19,9 @@ export class HeaderComponent {
 
 	constructor(
 		private readonly authService: AuthService,
-		private readonly jwtService: JwtService,
+		private readonly authStore: AuthStore,
 	) {
-		this.isAuthenticated$ = jwtService.isAuthentication;
+		this.isAuthenticated$ = authStore.isAuthenticated;
 	}
 
 	onLogout() {

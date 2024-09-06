@@ -47,3 +47,9 @@ export const UPDATE_TODO = gql`
 		}
 	}
 `;
+
+export const DELETE_TODO = gql`
+	mutation ($todoId: String!) {
+		deleteTodo(todoId: $todoId)
+	}
+`;

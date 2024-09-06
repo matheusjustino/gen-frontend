@@ -3,11 +3,13 @@ import { computed, Injectable, signal } from '@angular/core';
 // MODELS
 import { ITodo } from '../models/todo.model';
 
-export interface AppState {
+export interface TodoState {
+	loading: boolean;
 	todos: ITodo[];
 }
 
-const initialState: AppState = {
+export const todoInitialState: TodoState = {
+	loading: false,
 	todos: [],
 };
 
@@ -15,8 +17,13 @@ const initialState: AppState = {
 	providedIn: 'root',
 })
 export class TodoStore {
-	private readonly _store = signal(initialState);
+	private readonly _store = signal(todoInitialState);
 	readonly todos = computed(() => this._store().todos);
+	readonly loading = computed(() => this._store().loading);
+
+	setLoading(loading: boolean): void {
+		this._store.update((state) => ({ ...state, loading }));
+	}
 
 	setTodos(todos: ITodo[]): void {
 		this._store.update((state) => ({ ...state, todos }));
@@ -25,7 +32,7 @@ export class TodoStore {
 	addTodo(todo: ITodo): void {
 		this._store.update((state) => ({
 			...state,
-			todos: [...state.todos, todo],
+			todos: [todo, ...state.todos],
 		}));
 	}
 
@@ -44,6 +51,15 @@ export class TodoStore {
 			}
 
 			return state;
+		});
+	}
+
+	deleteTodo(todoId: string): void {
+		this._store.update((state) => {
+			return {
+				...state,
+				todos: [...state.todos.filter((todo) => todo.id !== todoId)],
+			};
 		});
 	}
 }

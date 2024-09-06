@@ -1,14 +1,14 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 
-// SERVICES
-import { JwtService } from '../services/jwt.service';
+// STORES
+import { AuthStore } from '../store/auth.store';
 
 export const guestGuard: CanActivateFn = () => {
-	const jwtService = inject(JwtService);
+	const authStore = inject(AuthStore);
 	const router = inject(Router);
 
-	jwtService.isAuthentication.subscribe({
+	authStore.isAuthenticated.subscribe({
 		next: (value) => {
 			if (value) {
 				router.navigate(['todo']);

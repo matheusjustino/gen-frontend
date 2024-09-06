@@ -20,6 +20,7 @@ import { TodoService } from '../../core/services/todo.service';
 import { TodoStore } from '../../core/store/todo.store';
 
 // COMPONENTS
+import { LoadingComponent } from '../../components/loading/loading.component';
 import { SlidePanelComponent } from '../../components/slide-panel/slide-panel.component';
 import { TodoCardComponent } from '../../components/todo-card/todo-card.component';
 
@@ -31,6 +32,7 @@ import { TodoCardComponent } from '../../components/todo-card/todo-card.componen
 		LucideAngularModule,
 		TodoCardComponent,
 		SlidePanelComponent,
+		LoadingComponent,
 	],
 	templateUrl: './todo.component.html',
 	styleUrl: './todo.component.scss',
@@ -41,6 +43,7 @@ export class TodoComponent implements OnInit, OnDestroy {
 	protected readonly todoForm!: FormGroup;
 	private readonly subs = new SubSink();
 	protected todos = computed<ITodo[]>(() => []);
+	protected loading = computed<boolean>(() => false);
 	protected isSlidePanelOpen = false;
 	protected todoId: string | null = null;
 
@@ -51,10 +54,20 @@ export class TodoComponent implements OnInit, OnDestroy {
 		private readonly todoStore: TodoStore,
 	) {
 		this.todos = this.todoStore.todos;
+		this.loading = this.todoStore.loading;
 		this.todoForm = this.fb.group({
-			title: new FormControl('', [Validators.required]),
-			description: new FormControl('', [Validators.required]),
-			status: new FormControl('OPEN', [Validators.required]),
+			title: new FormControl('', {
+				nonNullable: true,
+				validators: [Validators.required],
+			}),
+			description: new FormControl('', {
+				nonNullable: true,
+				validators: [Validators.required],
+			}),
+			status: new FormControl('OPEN', {
+				nonNullable: true,
+				validators: [Validators.required],
+			}),
 		});
 	}
 
@@ -71,8 +84,10 @@ export class TodoComponent implements OnInit, OnDestroy {
 	}
 
 	onCloseSlidePanel() {
+		console.log(this.todoForm.value);
 		this.isSlidePanelOpen = false;
 		this.resetForm();
+		console.log(this.todoForm.value);
 	}
 
 	onLoadTodoForm(item: ITodo) {
@@ -85,8 +100,19 @@ export class TodoComponent implements OnInit, OnDestroy {
 		this.onOpenSlidePanel();
 	}
 
+	onDeleteTodo() {
+		if (this.todoId) {
+			this.subs.sink = this.todoService.delete(this.todoId).subscribe({
+				complete: () => {
+					this.toastr.success(`TODO deleted successfully`);
+					this.onCloseSlidePanel();
+				},
+			});
+		}
+	}
+
 	onSubmit() {
-		if (this.todoForm.valid) {
+		if (this.todoForm.valid && this.todoForm.dirty) {
 			if (this.todoId) {
 				this.updateTodo();
 			} else {
@@ -114,7 +140,7 @@ export class TodoComponent implements OnInit, OnDestroy {
 		this.subs.sink = this.todoService
 			.create(this.todoForm.value)
 			.subscribe({
-				next: () => {
+				complete: () => {
 					this.toastr.success(`TODO created successfully`);
 					this.onCloseSlidePanel();
 				},
@@ -129,7 +155,7 @@ export class TodoComponent implements OnInit, OnDestroy {
 		this.subs.sink = this.todoService
 			.update({ ...this.todoForm.value, id: this.todoId })
 			.subscribe({
-				next: () => {
+				complete: () => {
 					this.toastr.success(`TODO updated successfully`);
 					this.onCloseSlidePanel();
 				},

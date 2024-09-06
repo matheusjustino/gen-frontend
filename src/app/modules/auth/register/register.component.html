@@ -78,7 +78,16 @@
 		</div>
 
 		<div class="flex items-center justify-between gap-3">
-			<button class="btn btn-primary">Submit</button>
+			<button
+				class="btn btn-primary disabled:opacity-50"
+				[disabled]="loading() || !registerForm.valid"
+			>
+				@if (loading()) {
+					<app-loading [size]="'sm'"></app-loading>
+				} @else {
+					Submit
+				}
+			</button>
 			<a (click)="navigateTo('')" class="cursor-pointer underline text-slate-400">Already have an account?</a>
 		</div>
 	</form>

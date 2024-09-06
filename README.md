@@ -24,6 +24,9 @@ $ docker compose up
 $ docker-compose up
 ```
 
+_Execute o comando acima nos dois projetos para executar sem configuração
+adicional._
+
 ## Outros
 
 -   [Backend da aplicação](https://github.com/matheusjustino/gen-backend)
